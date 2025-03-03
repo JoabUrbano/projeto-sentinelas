@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 
 from Core.ColetaDados.Interfaces.ColetaDadosInterface import ColetaDadosInterface
+from Core.Repositorys.Tamplate.RepositoryInterf
 
 class AvistagemDeteccaoColetaDados(ColetaDadosInterface):
 
@@ -27,6 +28,22 @@ class AvistagemDeteccaoColetaDados(ColetaDadosInterface):
         # Converte a coluna para datetime, tratando erros
         dados["Data"] = pd.to_datetime(dados["Data"], format="%m/%d/%Y", errors="coerce")
         dados["Data"] = dados["Data"].dt.strftime("%Y-%m-%d %H:%M:%S")
+
+        # ----- Tamanho de grupo -----
+
+        dados["Tamanho de grupo"] = dados["Tamanho de grupo"].astype(str).replace("x", "1")
+  
+        # d+ para pegar obrigatoriamente e os s* a* para capturar espaços e string
+        dados[["Tamanho de grupo mínimo", "Tamanho de grupo máximo"]] = dados["Tamanho de grupo"].str.extract(r'(\d+)\s*a*\s*(\d*)')
+        
+        # Preenche o valor máximo com o mínimo onde o máximo estiver vazio
+        dados["Tamanho de grupo máximo"] = dados["Tamanho de grupo máximo"].replace("", np.nan)
+        dados["Tamanho de grupo máximo"] = dados["Tamanho de grupo máximo"].fillna(dados["Tamanho de grupo mínimo"])
+        
+        dados["Tamanho de grupo mínimo"] = pd.to_numeric(dados["Tamanho de grupo mínimo"], errors='coerce')
+        dados["Tamanho de grupo máximo"] = pd.to_numeric(dados["Tamanho de grupo máximo"], errors='coerce')
+
+        dados.drop(columns=["Tamanho de grupo"], inplace=True)
 
         self.persistirDados(dados)
 
