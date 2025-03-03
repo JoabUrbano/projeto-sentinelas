@@ -1,40 +1,16 @@
-import pymysql
 import numpy as np
 import pandas as pd
 
-from dotenv import load_dotenv
-import os
+from Core.Repositorys.Template.RepositoryTemplate import RepositoryTemplate
 
-load_dotenv()
-
-class AvistagemDeteccaoRepository:
-
-    def __init__(self):
-        self.host = os.getenv("DB_HOST")
-        self.port = int(os.getenv("DB_PORT", 3306))
-        self.user = os.getenv("DB_USER")
-        self.password = os.getenv("DB_PASSWORD")
-        self.database = os.getenv("DB_DATABASE")
+class AvistagemDeteccaoRepository(RepositoryTemplate):
 
     def inserirDados(self, dados: pd.DataFrame) -> None:
         sql = """
             INSERT INTO tb_avistagem_deteccao 
-            (expedicao, numero, navio, data, registro, especie, nome_comum, latitude, longitude, tamanho_grupo, filhotes, observacoes) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            (expedicao, numero, navio, data, registro, especie, nome_comum, latitude, longitude, filhotes, observacoes, tamanho_grupo_minimo, tamanho_grupo_maximo) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
-        valores = dados.to_records(index=False).tolist()
-        try:
-            with pymysql.connect(
-                host=self.host,
-                port=self.port,
-                user=self.user,
-                password=self.password,
-                database=self.database
-            ) as connection:
-                with connection.cursor() as cursor:
-                    cursor.executemany(sql, valores)
-                connection.commit()
-                print("Dados inseridos com sucesso!")
-        except Exception as e:
-            print(f"Erro ao inserir no banco: {e}")
 
+        self.persistirDados(dados, sql)
+    

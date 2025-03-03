@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 
 from Core.ColetaDados.Interfaces.ColetaDadosInterface import ColetaDadosInterface
-from Core.Repositorys.Tamplate.RepositoryInterf
 
 class AvistagemDeteccaoColetaDados(ColetaDadosInterface):
 
@@ -30,7 +29,6 @@ class AvistagemDeteccaoColetaDados(ColetaDadosInterface):
         dados["Data"] = dados["Data"].dt.strftime("%Y-%m-%d %H:%M:%S")
 
         # ----- Tamanho de grupo -----
-
         dados["Tamanho de grupo"] = dados["Tamanho de grupo"].astype(str).replace("x", "1")
   
         # d+ para pegar obrigatoriamente e os s* a* para capturar espaços e string
