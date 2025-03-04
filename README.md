@@ -35,5 +35,7 @@ Projeto feito em python 3 que visa pegar os dados csv do projeto sentinelas, tra
 
 4. No arquivo main crie os objetos com o nome do arquivo ee passe um objeto repository especifico para aquele arquivo csv.
 
+5. Crie um arquivo ```.env``` na raiz do projeto e defina as variaveis de ambiente no arquivo como está no ```.env.example```.
+
 <h3>Autor</h3>
 <a href="https://github.com/JoabUrbano">Joab Urbano</a><br>
