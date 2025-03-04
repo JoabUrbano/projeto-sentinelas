@@ -34,7 +34,6 @@ class AvistagemDeteccaoColetaDados(ColetaDadosInterface):
         # d+ para pegar obrigatoriamente e os s* a* para capturar espaços e string
         dados[["Tamanho de grupo mínimo", "Tamanho de grupo máximo"]] = dados["Tamanho de grupo"].str.extract(r'(\d+)\s*a*\s*(\d*)')
         
-        # Preenche o valor máximo com o mínimo onde o máximo estiver vazio
         dados["Tamanho de grupo máximo"] = dados["Tamanho de grupo máximo"].replace("", np.nan)
         dados["Tamanho de grupo máximo"] = dados["Tamanho de grupo máximo"].fillna(dados["Tamanho de grupo mínimo"])
         

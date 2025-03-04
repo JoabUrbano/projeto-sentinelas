@@ -1,4 +1,3 @@
-import numpy as np
 import pandas as pd
 
 from Core.Repositorys.Template.RepositoryTemplate import RepositoryTemplate
@@ -13,4 +12,3 @@ class AvistagemDeteccaoRepository(RepositoryTemplate):
         """
 
         self.persistirDados(dados, sql)
-    
