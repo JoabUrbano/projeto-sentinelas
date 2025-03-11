@@ -2,9 +2,11 @@ from pathlib import Path
 
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
 
+from main import Main
+main = Main()
+
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"assets\frame0")
-
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
@@ -13,7 +15,6 @@ window = Tk()
 
 window.geometry("862x519")
 window.configure(bg = "#3A7FF6")
-
 
 canvas = Canvas(
     window,
@@ -35,13 +36,12 @@ canvas.create_rectangle(
     outline="")
 
 # Botão gerar
-button_image_1 = PhotoImage(
-    file=relative_to_assets("button_1.png"))
+button_image_1 = PhotoImage(file=relative_to_assets("button_1.png"))
 button_1 = Button(
     image=button_image_1,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_1 clicked"),
+    command=main.carregarAvistagemDeteccao,
     relief="flat"
 )
 button_1.place(
@@ -82,7 +82,7 @@ canvas.create_rectangle(
 
 # Entrada de texto 01
 text_area_1 = PhotoImage(
-    file=relative_to_assets("entry_1.png"))
+    file=relative_to_assets("entry.png"))
 entry_bg_1 = canvas.create_image(
     650.4999999999999,
     185.5,
@@ -103,7 +103,7 @@ entry_1.place(
 
 # Entrada de texto 02
 text_area_2 = PhotoImage(
-    file=relative_to_assets("entry_2.png"))
+    file=relative_to_assets("entry.png"))
 entry_bg_2 = canvas.create_image(
     650.4999999999999,
     329.5,
@@ -123,10 +123,10 @@ entry_2.place(
 )
 
 # Botão carregar arquivo
-button_image_2 = PhotoImage(
+button_file = PhotoImage(
     file=relative_to_assets("button_2.png"))
 button_2 = Button(
-    image=button_image_2,
+    image=button_file,
     borderwidth=0,
     highlightthickness=0,
     command=lambda: print("button_2 clicked"),
@@ -140,8 +140,7 @@ button_2.place(
 )
 
 # Logo
-logo = PhotoImage(
-    file=relative_to_assets("logo1.png"))
+logo = PhotoImage(file=relative_to_assets("logo1.png"))
 
 canvas.create_image(
     268,
