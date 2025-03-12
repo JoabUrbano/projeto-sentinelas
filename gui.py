@@ -3,7 +3,6 @@ from pathlib import Path
 import tkinter
 from tkinter import Tk, Canvas, Entry, Button, PhotoImage, ttk, filedialog
 
-
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"assets\frame0")
 
@@ -23,6 +22,10 @@ def onClick():
         )
     else:
         response = controller.tratarRequisicao(path, opcao)
+        if response == "Dados inseridos com sucesso!":
+            tkinter.messagebox.showinfo(title="Sucesso", message=response)
+        else:
+             tkinter.messagebox.showerror(title="Erro", message=response)
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
@@ -33,20 +36,14 @@ def selecionar_arquivo():
         entry.delete(0, tkinter.END)  # Limpa o Entry antes de inserir o novo caminho
         entry.insert(0, caminho_arquivo)  # Insere o caminho do arquivo
 
-
 window = Tk()
 
 window.geometry("862x519")
 window.configure(bg = "#3A7FF6")
 
 canvas = Canvas(
-    window,
-    bg = "#3A7FF6",
-    height = 519,
-    width = 862,
-    bd = 0,
-    highlightthickness = 0,
-    relief = "ridge"
+    window, bg = "#3A7FF6", height = 519, width = 862, bd = 0,
+    highlightthickness = 0, relief = "ridge"
 )
 
 canvas.place(x = 0, y = 0)
@@ -56,32 +53,21 @@ canvas.create_rectangle(431, 0, 862, 519, fill="#FCFCFC", outline="")
 button_image_1 = PhotoImage(file=relative_to_assets("button_1.png"))
 
 button_1 = Button(
-    image=button_image_1,
-    borderwidth=0,
-    highlightthickness=0,
-    command=onClick,
-    relief="flat"
+    image=button_image_1, borderwidth=0, highlightthickness=0,
+    command=onClick, relief="flat"
 )
 button_1.place(x=557, y=401, width=180, height=55)
 
 # Titulo
 canvas.create_text(
-    40,
-    127,
-    anchor="nw",
-    text="Projeto sentinelas",
-    fill="#FCFCFC",
-    font=("Roboto Bold", 24 * -1)
+    40, 127, anchor="nw", text="Projeto sentinelas",
+    fill="#FCFCFC", font=("Roboto Bold", 24 * -1)
 )
 
 # Texto 01
 canvas.create_text(
-    482,
-    74,
-    anchor="nw",
-    text="Selecione o arquivo",
-    fill="#505485",
-    font=("Roboto Bold", 24 * -1)
+    482, 74, anchor="nw", text="Selecione o arquivo", 
+    fill="#505485", font=("Roboto Bold", 24 * -1)
 )
 
 #  Retangulo sublinhado
@@ -92,13 +78,10 @@ style = ttk.Style()
 style.theme_use("clam")
 style.configure(
     "Custom.TCombobox",
-    fieldbackground="#F1F5FF",  # Fundo da área de texto
-    background="#F1F5FF",  # Fundo da lista suspensa
-    foreground="#000716",  # Cor do texto
-    borderwidth=0,  # Remove borda
-    relief="flat",  # Deixa o design mais "clean"
-    padding=5,  # Adiciona um espaçamento interno
+    fieldbackground="#F1F5FF", background="#F1F5FF",
+    foreground="#000716", borderwidth=0, relief="flat", padding=5,
 )
+
 listaOpcoes = ["Avistagem e detecção", "tipo 2"]
 combobox = ttk.Combobox(window, values=listaOpcoes, state="readonly", style="Custom.TCombobox")  # O state="readonly" impede entrada manual
 combobox.place(x=490, y=155, width=321, height=30)

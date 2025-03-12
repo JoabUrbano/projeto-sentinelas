@@ -5,17 +5,21 @@ from Core.ColetaDados.Interfaces.ColetaDadosInterface import ColetaDadosInterfac
 
 class AvistagemDeteccaoColetaDados(ColetaDadosInterface):
 
-    def __init__(self, fileName: str, repository):
-        self.path = "Dados/" + fileName
+    def __init__(self, path: str, repository):
+        self.path = path
         self.repository = repository
 
-    def carregarDados(self) -> None:
-        dados = pd.read_csv(
-            self.path, sep=",", encoding="utf-8", escapechar="\n"
-        )
-        self.formatarDados(dados)
+    def carregarDados(self) -> str:
+        try:
+            dados = pd.read_csv(
+                self.path, sep=",", encoding="utf-8", escapechar="\n"
+            )
+            return self.formatarDados(dados)
+        
+        except Exception as e:
+           return f"Erro ao abrir o arquivo!"
 
-    def formatarDados(self, dados: pd.DataFrame) -> None:
+    def formatarDados(self, dados: pd.DataFrame) -> str:
         dados["Filhotes"] = dados["Filhotes"].astype(str).replace("x", "0")
         dados["Filhotes"] = pd.to_numeric(dados["Filhotes"], errors='coerce').infer_objects(copy=False)
 
@@ -42,7 +46,7 @@ class AvistagemDeteccaoColetaDados(ColetaDadosInterface):
 
         dados.drop(columns=["Tamanho de grupo"], inplace=True)
 
-        self.persistirDados(dados)
+        return self.persistirDados(dados)
 
-    def persistirDados(self, dados: pd.DataFrame) -> None:
-        self.repository.inserirDados(dados)
+    def persistirDados(self, dados: pd.DataFrame) -> str:
+        return self.repository.inserirDados(dados)

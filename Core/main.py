@@ -2,10 +2,11 @@ from Core.ColetaDados.Implements.AvistagemDeteccaoColetaDados import AvistagemDe
 from Core.Repositorys.Implements.AvistagemDeteccaoRepository import AvistagemDeteccaoRepository
 
 class Main:
-    def carregarAvistagemDeteccao(self):
+    def carregarAvistagemDeteccao(self, path) -> str:
 
         avistagemDeteccaoRepository = AvistagemDeteccaoRepository()
-        avistagemDeteccaoColetarDados = AvistagemDeteccaoColetaDados("Avistagens e detecções_Sentinelas_2023.xlsx - Detcções visuais e acústicas.csv",
-                                            avistagemDeteccaoRepository)
+        avistagemDeteccaoColetarDados = AvistagemDeteccaoColetaDados(
+            path, avistagemDeteccaoRepository
+        )
 
-        avistagemDeteccaoColetarDados.carregarDados()
+        return avistagemDeteccaoColetarDados.carregarDados()

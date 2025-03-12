@@ -14,11 +14,11 @@ class RepositoryTemplate:
         self.password = os.getenv("DB_PASSWORD")
         self.database = os.getenv("DB_DATABASE")
 
-    def inserirDados(self, dados: pd.DataFrame) -> None:
+    def inserirDados(self, dados: pd.DataFrame) -> str:
         sql = ""
-        self.persistirDados(dados, sql)
+        return self.persistirDados(dados, sql)
     
-    def persistirDados(self, dados, sql):
+    def persistirDados(self, dados, sql) -> str:
         valores = dados.to_records(index=False).tolist()
         try:
             with pymysql.connect(
@@ -30,8 +30,9 @@ class RepositoryTemplate:
             ) as connection:
                 with connection.cursor() as cursor:
                     cursor.executemany(sql, valores)
-                connection.commit()
-                print("Dados inseridos com sucesso!")
-        except Exception as e:
-            print(f"Erro ao inserir no banco: {e}")
 
+                connection.commit()
+                return "Dados inseridos com sucesso!"
+        
+        except Exception as e:
+           return f"Erro ao inserir no banco: {e}"
