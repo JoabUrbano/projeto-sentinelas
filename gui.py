@@ -3,11 +3,14 @@ from pathlib import Path
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
 from tkinter import ttk
 
+OUTPUT_PATH = Path(__file__).parent
+ASSETS_PATH = OUTPUT_PATH / Path(r"assets\frame0")
+
 from Core.DadosController import DadosController
 controller = DadosController()
 
-OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"assets\frame0")
+def onClick():
+    controller.tratarRequisicao()
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
@@ -37,7 +40,7 @@ button_1 = Button(
     image=button_image_1,
     borderwidth=0,
     highlightthickness=0,
-    command=controller.tratarRequisicao,
+    command=onClick,
     relief="flat"
 )
 button_1.place(x=557, y=401, width=180, height=55)
