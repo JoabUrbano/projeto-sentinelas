@@ -3,8 +3,8 @@ from pathlib import Path
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
 from tkinter import ttk
 
-from Core.main import Main
-main = Main()
+from Core.DadosController import DadosController
+controller = DadosController()
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"assets\frame0")
@@ -37,7 +37,7 @@ button_1 = Button(
     image=button_image_1,
     borderwidth=0,
     highlightthickness=0,
-    command=main.carregarAvistagemDeteccao,
+    command=controller.tratarRequisicao,
     relief="flat"
 )
 button_1.place(x=557, y=401, width=180, height=55)
