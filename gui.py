@@ -1,8 +1,9 @@
 from pathlib import Path
 
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
+from tkinter import ttk
 
-from main import Main
+from Core.main import Main
 main = Main()
 
 OUTPUT_PATH = Path(__file__).parent
@@ -27,16 +28,11 @@ canvas = Canvas(
 )
 
 canvas.place(x = 0, y = 0)
-canvas.create_rectangle(
-    430.9999999999999,
-    0.0,
-    861.9999999999999,
-    519.0,
-    fill="#FCFCFC",
-    outline="")
+canvas.create_rectangle(431, 0, 862, 519, fill="#FCFCFC", outline="")
 
 # Botão gerar
 button_image_1 = PhotoImage(file=relative_to_assets("button_1.png"))
+
 button_1 = Button(
     image=button_image_1,
     borderwidth=0,
@@ -44,17 +40,12 @@ button_1 = Button(
     command=main.carregarAvistagemDeteccao,
     relief="flat"
 )
-button_1.place(
-    x=556.9999999999999,
-    y=401.0,
-    width=180.0,
-    height=55.0
-)
+button_1.place(x=557, y=401, width=180, height=55)
 
 # Titulo
 canvas.create_text(
-    39.999999999999886,
-    127.0,
+    40,
+    127,
     anchor="nw",
     text="Projeto sentinelas",
     fill="#FCFCFC",
@@ -63,8 +54,8 @@ canvas.create_text(
 
 # Texto 01
 canvas.create_text(
-    481.9999999999999,
-    74.0,
+    482,
+    74,
     anchor="nw",
     text="Selecione o arquivo",
     fill="#505485",
@@ -72,82 +63,54 @@ canvas.create_text(
 )
 
 #  Retangulo sublinhado
-canvas.create_rectangle(
-    39.999999999999886,
-    160.0,
-    99.99999999999989,
-    165.0,
-    fill="#FCFCFC",
-    outline="")
+canvas.create_rectangle(40, 160, 100, 165, fill="#FCFCFC", outline="")
 
 # Entrada de texto 01
-text_area_1 = PhotoImage(
-    file=relative_to_assets("entry.png"))
-entry_bg_1 = canvas.create_image(
-    650.4999999999999,
-    185.5,
-    image=text_area_1
+style = ttk.Style()
+style.theme_use("clam")
+style.configure(
+    "Custom.TCombobox",
+    fieldbackground="#F1F5FF",  # Fundo da área de texto
+    background="#F1F5FF",  # Fundo da lista suspensa
+    foreground="#000716",  # Cor do texto
+    borderwidth=0,  # Remove borda
+    relief="flat",  # Deixa o design mais "clean"
+    padding=5,  # Adiciona um espaçamento interno
 )
-entry_1 = Entry(
-    bd=0,
-    bg="#F1F5FF",
-    fg="#000716",
-    highlightthickness=0
-)
-entry_1.place(
-    x=489.9999999999999,
-    y=155.0,
-    width=321.0,
-    height=59.0
-)
+listaOpcoes = ["Avistagem e detecção", "tipo 2"]
+combobox = ttk.Combobox(window, values=listaOpcoes, state="readonly", style="Custom.TCombobox")  # O state="readonly" impede entrada manual
+combobox.place(x=490, y=155, width=321, height=30)
+combobox.set("Selecione o tipo da planilha")
 
 # Entrada de texto 02
-text_area_2 = PhotoImage(
-    file=relative_to_assets("entry.png"))
-entry_bg_2 = canvas.create_image(
-    650.4999999999999,
-    329.5,
-    image=text_area_2
-)
-entry_2 = Entry(
+text_area = PhotoImage(file=relative_to_assets("entry.png"))
+
+entry_bg = canvas.create_image(650.5, 329.5, image=text_area)
+
+entry = Entry(
     bd=0,
     bg="#F1F5FF",
     fg="#000716",
     highlightthickness=0
 )
-entry_2.place(
-    x=489.9999999999999,
-    y=299.0,
-    width=321.0,
-    height=59.0
-)
+entry.place(x=490, y=299, width=321, height=59)
 
 # Botão carregar arquivo
-button_file = PhotoImage(
-    file=relative_to_assets("button_2.png"))
-button_2 = Button(
+button_file = PhotoImage(file=relative_to_assets("button_2.png"))
+
+button_generate = Button(
     image=button_file,
     borderwidth=0,
     highlightthickness=0,
     command=lambda: print("button_2 clicked"),
     relief="flat"
 )
-button_2.place(
-    x=782.9999999999999,
-    y=319.0,
-    width=24.0,
-    height=22.0
-)
+button_generate.place(x=783, y=319, width=24, height=22)
 
 # Logo
 logo = PhotoImage(file=relative_to_assets("logo1.png"))
-
-canvas.create_image(
-    268,
-    260.0,
-    image=logo,
-    anchor="center"
-)
+canvas.create_image(268, 260, image=logo, anchor="center")
 
 window.resizable(False, False)
+window.title("Tratar dados Sentinelas")
 window.mainloop()
