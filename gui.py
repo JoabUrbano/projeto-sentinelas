@@ -1,7 +1,8 @@
 from pathlib import Path
 
-from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
-from tkinter import ttk
+import tkinter
+from tkinter import Tk, Canvas, Entry, Button, PhotoImage, ttk, filedialog
+
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"assets\frame0")
@@ -10,10 +11,28 @@ from Core.DadosController import DadosController
 controller = DadosController()
 
 def onClick():
-    controller.tratarRequisicao()
+    path = entry.get()
+    opcao = combobox.get()
+    if path == "":
+        tkinter.messagebox.showwarning(
+            title="Campo Vazio", message="Caminho vazio!"
+        )
+    elif opcao == "Selecione o tipo da planilha":
+        tkinter.messagebox.showwarning(
+            title="Opção não selecionada", message="Nenhuma opção selecionada!"
+        )
+    else:
+        response = controller.tratarRequisicao(path, opcao)
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
+
+def selecionar_arquivo():
+    caminho_arquivo = filedialog.askopenfilename()
+    if caminho_arquivo:
+        entry.delete(0, tkinter.END)  # Limpa o Entry antes de inserir o novo caminho
+        entry.insert(0, caminho_arquivo)  # Insere o caminho do arquivo
+
 
 window = Tk()
 
@@ -105,7 +124,7 @@ button_generate = Button(
     image=button_file,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_2 clicked"),
+    command=selecionar_arquivo,
     relief="flat"
 )
 button_generate.place(x=783, y=319, width=24, height=22)
