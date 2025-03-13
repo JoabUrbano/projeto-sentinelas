@@ -1,3 +1,6 @@
 *.csv
 __pycache__
 .env
+*.exe
+build
+gui.spec

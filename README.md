@@ -9,6 +9,7 @@ Projeto feito em python 3 que visa pegar os dados csv do projeto sentinelas, tra
 - Pandas<br>
 - PyMySQL<br>
 - python-dotenv<br>
+- Tkinter<br>
 
 <h2>Como rodar o projeto?</h2>
 
@@ -31,11 +32,20 @@ Projeto feito em python 3 que visa pegar os dados csv do projeto sentinelas, tra
     pip install python-dotenv
 ```
 
-3. Na pasta ```Dados``` coloque as tabelas que deseja tratar, instancie as classes especificas para tratar cada tipo de arquivo csv.
+3. Crie um arquivo ```.env``` na raiz do projeto e defina as variaveis de ambiente no arquivo como está no ```.env.example```.
 
-4. No arquivo main crie os objetos com o nome do arquivo ee passe um objeto repository especifico para aquele arquivo csv.
+4. O arquivo ```gui.py```  é a interfacie gráfica do projeto, baasta executana na pasta raiz do projeco com:
+```sh
+    python gui.py
+```
+e poderá utilizar o programa.
 
-5. Crie um arquivo ```.env``` na raiz do projeto e defina as variaveis de ambiente no arquivo como está no ```.env.example```.
+5. Alternativamente, se quiser gerar um executavel basta rodar na raiz:
+```sh
+    pip install pyinstaller
+    pyinstaller --onefile --windowed --add-data "assets/frame0;assets/frame0" gui.py
+```
+que irá gerar o executável dentro de uma pasta ```dist```. Basta arrastar o executavel para a raiz do projeto e pode apagar a pasta ```dist```, a ```build``` e o arquivo ```gui.spec```. Há também a possibilidade de criar um atalho do arquivo e movelo para onde você desejar.
 
 <h3>Autor</h3>
 <a href="https://github.com/JoabUrbano">Joab Urbano</a><br>

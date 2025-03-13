@@ -3,13 +3,13 @@ from abc import ABC, abstractmethod
 class ColetaDadosInterface:
 
     @abstractmethod
-    def carregarDados(self) -> None:
+    def carregarDados(self) -> str:
         pass
     
     @abstractmethod
-    def formatarDados(self) -> None:
+    def formatarDados(self) -> str:
         pass
     
     @abstractmethod
-    def persistirDados(self) -> None:
+    def persistirDados(self) -> str:
         pass
