@@ -4,23 +4,19 @@
 Projeto feito em python 3 que visa pegar os dados csv do projeto sentinelas, tratar os dados e inseri-los em um banco MySQl.
 
 <h1 id="usage" > 📚 Bibliotecas </h1>
-- Matplotlib<br>
 - Numpy<br>
 - Pandas<br>
 - PyMySQL<br>
 - python-dotenv<br>
 - Tkinter<br>
 
-<h2>Como rodar o projeto?</h2>
+<h2>👨‍💻 Como rodar o projeto</h2>
 
 1. É necessario ter o <a href="https://www.python.org/">python 3</a> instalado e o pip.
 
 2. Com o pip instalado é necessario instalar as bibliotecas.
 ```sh
     pip install numpy
-```
-```sh
-    pip install matplotlib
 ```
 ```sh
     pip install pandas
