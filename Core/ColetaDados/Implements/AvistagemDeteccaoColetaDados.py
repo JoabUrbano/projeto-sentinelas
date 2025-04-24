@@ -40,7 +40,7 @@ class AvistagemDeteccaoColetaDados(ColetaDadosInterface):
 
     def formatarDados(self, dados: pd.DataFrame) -> str:
         """
-        Método que trata os dados, realiza a limpeza e formata aos dados
+        Método que trata e formata os dados
 
         :param dados: dataframe pandas que foi criado no método carregarDados
         :type dados: pd.DataFrame
@@ -50,8 +50,6 @@ class AvistagemDeteccaoColetaDados(ColetaDadosInterface):
         """
         dados["Filhotes"] = dados["Filhotes"].astype(str).replace("x", "0")
         dados["Filhotes"] = pd.to_numeric(dados["Filhotes"], errors='coerce').infer_objects(copy=False)
-
-        dados["Observações"] = dados["Observações"].fillna("Nenhuma")
          
         dados["Lat"] = dados["Lat"].astype(str).str.replace(",", ".").astype(float)
         dados["Long"] = dados["Long"].astype(str).str.replace(",", ".").astype(float)
@@ -60,7 +58,7 @@ class AvistagemDeteccaoColetaDados(ColetaDadosInterface):
         dados["Data"] = pd.to_datetime(dados["Data"], format="%m/%d/%Y", errors="coerce")
         dados["Data"] = dados["Data"].dt.strftime("%Y-%m-%d %H:%M:%S")
 
-        # ----- Tamanho de grupo -----
+        # ----- Separar tamanho de grupo em mínimo e máximo-----
         dados["Tamanho de grupo"] = dados["Tamanho de grupo"].astype(str).replace("x", "1")
   
         # d+ para pegar obrigatoriamente e os s* a* para capturar espaços e string
@@ -72,9 +70,33 @@ class AvistagemDeteccaoColetaDados(ColetaDadosInterface):
         dados["Tamanho de grupo mínimo"] = pd.to_numeric(dados["Tamanho de grupo mínimo"], errors='coerce')
         dados["Tamanho de grupo máximo"] = pd.to_numeric(dados["Tamanho de grupo máximo"], errors='coerce')
 
+        return self.tratarDadosfaltantes(dados)
+    
+    def tratarDadosfaltantes(self, dados: pd.DataFrame) -> str:
+        """
+        Método que trata as colunas com dados faltante, tentando inserir dados neutros
+
+        :return: Mensagem de sucesso ou erro.
+        :rtype: str
+        """
+        dados["Observações"] = dados["Observações"].fillna("Nenhuma")
+        
+        return self.limparDados(dados)
+    
+    def limparDados(self, dados: pd.DataFrame) -> str:
+        """
+        Método que remove as colunas que não são necessarias
+
+        :param dados: dataframe pandas que foi criado no método carregarDados
+        :type dados: pd.DataFrame
+
+        :return: Mensagem de sucesso ou erro.
+        :rtype: str
+        """
         dados.drop(columns=["Tamanho de grupo"], inplace=True)
 
         return self.persistirDados(dados)
+
 
     def persistirDados(self, dados: pd.DataFrame) -> str:
         """

@@ -15,7 +15,27 @@ class ColetaDadosInterface:
     @abstractmethod
     def formatarDados(self) -> str:
         """
-        Método que trata os dados, realiza a limpeza e formata aos dados
+        Método que trata e formata os dados
+
+        :return: Mensagem de sucesso ou erro.
+        :rtype: str
+        """
+        pass
+
+    @abstractmethod
+    def tratarDadosfaltantes(self) -> str:
+        """
+        Método que trata as colunas com dados faltante, tentando inserir dados neutros
+
+        :return: Mensagem de sucesso ou erro.
+        :rtype: str
+        """
+        pass
+
+    @abstractmethod
+    def limparDados(self) -> str:
+        """
+        Método que remove as colunas que não são necessarias
 
         :return: Mensagem de sucesso ou erro.
         :rtype: str
