@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class ColetaDadosInterface:
+class TratarDadosServiceInterface:
 
     @abstractmethod
     def carregarDados(self) -> str:

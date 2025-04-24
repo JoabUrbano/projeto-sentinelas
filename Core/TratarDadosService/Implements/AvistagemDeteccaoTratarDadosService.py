@@ -1,9 +1,9 @@
 import numpy as np
 import pandas as pd
 
-from Core.ColetaDados.Interfaces.ColetaDadosInterface import ColetaDadosInterface
+from Core.TratarDadosService.Interfaces.TratarDadosServiceInterface import TratarDadosServiceInterface
 
-class AvistagemDeteccaoColetaDados(ColetaDadosInterface):
+class AvistagemDeteccaoTratarDadosService(TratarDadosServiceInterface):
 
     def __init__(self, path: str, repository):
         """
