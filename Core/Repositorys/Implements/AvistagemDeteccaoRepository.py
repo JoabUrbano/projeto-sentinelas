@@ -14,8 +14,8 @@ class AvistagemDeteccaoRepository(RepositoryTemplate):
         """
         sql = """
             INSERT INTO tb_avistagem_deteccao 
-            (expedicao, numero, navio, data, registro, especie, nome_comum, latitude, longitude, filhotes, observacoes, tamanho_grupo_minimo, tamanho_grupo_maximo) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            (expedicao, pernada, navio, data, registro, tipo_som, especie, nome_comum, latitude, longitude, filhotes, observacoes, tamanho_grupo_minimo, tamanho_grupo_maximo) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
 
         return self.persistirDados(dados, sql)
