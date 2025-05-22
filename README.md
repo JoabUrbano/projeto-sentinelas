@@ -39,7 +39,8 @@ e poderá utilizar o programa.
 5. Alternativamente, se quiser gerar um executavel basta rodar na raiz:
 ```sh
     pip install pyinstaller
-    pyinstaller --onefile --windowed --add-data "assets/frame0;assets/frame0" gui.py
+
+    pyinstaller --onefile --windowed --add-data ".env;." --add-data "assets/frame0;assets/frame0" gui.py
 ```
 que irá gerar o executável dentro de uma pasta ```dist```. Basta arrastar o executavel para a raiz do projeto e pode apagar a pasta ```dist```, a ```build``` e o arquivo ```gui.spec```. Há também a possibilidade de criar um atalho do arquivo e movelo para onde você desejar.
 
