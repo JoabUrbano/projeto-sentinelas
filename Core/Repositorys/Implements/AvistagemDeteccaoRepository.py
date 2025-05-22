@@ -1,16 +1,19 @@
 from Core.Repositorys.Template.RepositoryTemplate import RepositoryTemplate
 
 class AvistagemDeteccaoRepository(RepositoryTemplate):
+    """
+    Implementação do Template do repository, que define a inserção dos dados
+    """
 
     def inserirDados(self, dados) -> str:
         """
         Sobrescrição do método com os parametros do dataframe para inserir no banco
 
-        :param dados: dataframe pronto que será inserido no banco de dados
-        :type dados: pd.DataFrame
+        Args:
+            dados (pd.DataFrame): dataframe pronto que será inserido no banco de dados
 
-        :return: Mensagem de sucesso ou erro.
-        :rtype: str
+        Returns:
+            str: Mensagem de sucesso ou erro.
         """
         sql = """
             INSERT INTO tb_avistagem_deteccao 

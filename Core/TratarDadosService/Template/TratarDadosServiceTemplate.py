@@ -3,29 +3,32 @@ import pandas as pd
 import re
 
 class TratarDadosServiceTemplate():
+    """
+    Template do tratamento de dados da camada de serviço
+    """
     def __init__(self, path: str, repository):
         """
-        Método construtor
+        Construtor
 
-        :param path: Caminho para o arquivo a ser lido
-        :type path: str
-        :param repository: Instância de RepositoryTemplate
-        :type repository: RepositoryTemplate
+        Args:
+            path str: Caminho para abrir o arquivo csv com os dados
+            repository (RepositoryTemplate): Implementação de repository correspondente
         """
         self.path = path
         self.repository = repository
     
     def carregarDados(self) -> str:
         """
-        Método para abrir o arquivo .csv e coloca em um dataframe pandas
+        Abre o arquivo .csv como um dataframe pandas
 
-        :return: Mensagem de sucesso ou erro.
-        :rtype: str
+        Returns:
+            str: Mensagem de sucesso ou erro
 
-        :raises FileNotFoundError: Se o arquivo não for encontrado no caminho recebido.
-        :raises UnicodeDecodeError: Se a codificação do arquivo for incompatível com 'utf-8'.
-        :raises pandas.errors.ParserError: Se o conteúdo do CSV estiver mal formado.
-        :raises OSError: Em caso de problemas ao acessar o arquivo.
+        Errors:
+            FileNotFoundError: Se o arquivo não for encontrado no caminho recebido
+            UnicodeDecodeError: Se a codificação do arquivo for incompatível com 'utf-8'
+            pandas.errors.ParserError: Se o conteúdo do CSV estiver mal formado
+            OSError: Em caso de problemas ao acessar o arquivo
         """
         try:
             dados = pd.read_csv(
@@ -38,39 +41,38 @@ class TratarDadosServiceTemplate():
 
     def tratarDadosfaltantes(self, dados: pd.DataFrame) -> str:
         """
-        Método a ser sobrescrito que trata as colunas com dados faltante,
-        tentando inserir dados neutros
+        Tratar dados faltantes, pode ser sobrescrito
 
-        :param dados: dataframe pandas que foi criado no método carregarDados
-        :type dados: pd.DataFrame
+        Args:
+            dados (pd.DataFrame): dataframe com dados de avistagem e detecção
 
-        :return: Mensagem de sucesso ou erro.
-        :rtype: str
+        Returns:
+            str: Mensagem de sucesso ou erro
         """
 
         return self.formatarDados(dados)
 
     def formatarDados(self, dados: pd.DataFrame) -> str:
         """
-        Método a ser sobrescrito que trata e formata os dados
+        Formata os dados, pode ser sobrescrito
 
-        :param dados: dataframe pandas que foi criado no método carregarDados
-        :type dados: pd.DataFrame
+        Args:
+            dados (pd.DataFrame): dataframe com valores vazios tratados
 
-        :return: Mensagem de sucesso ou erro.
-        :rtype: str
+        Returns:
+            str: Mensagem de sucesso ou erro
         """
         return self.limparDados(dados)
     
     def limparDados(self, dados: pd.DataFrame) -> str:
         """
-        Método a ser sobrescrito que remove as colunas que não são necessarias
+        Limpeza de dados inválidos, pode ser sobrescrito
 
-        :param dados: dataframe pandas que foi criado no método carregarDados
-        :type dados: pd.DataFrame
+        Args:
+            dados (pd.DataFrame): dataframe com data e coordenadas formatadas.
 
-        :return: Mensagem de sucesso ou erro.
-        :rtype: str
+        Returns:
+            str: Mensagem de sucesso ou erro
         """
         return self.persistirDados(dados)
 
@@ -79,10 +81,10 @@ class TratarDadosServiceTemplate():
         """
         Método que chama o repository para persistir os dados do dataframe
 
-        :param dados: dataframe pandas que já foi tratado no método de formatarDados
-        :type dados: pd.DataFrame
+        Args:
+            dados (pd.DataFrame): dataframe pronto para persistência
 
-        :return: Mensagem de sucesso ou erro.
-        :rtype: str
+        Returns:
+            str: Mensagem de sucesso ou erro
         """
         return self.repository.inserirDados(dados)

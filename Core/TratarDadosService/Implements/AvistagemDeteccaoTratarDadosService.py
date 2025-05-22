@@ -6,7 +6,7 @@ from Core.TratarDadosService.Template.TratarDadosServiceTemplate import TratarDa
 class AvistagemDeteccaoTratarDadosService(TratarDadosServiceTemplate):
     """
     Implementação do template de tratamento de dados para especializar a classe para a
-    tabela do tipo avistagem e detecção.
+    tabela do tipo avistagem e detecção
     """
 
     def converterCoordenada(self, cord):
@@ -14,10 +14,10 @@ class AvistagemDeteccaoTratarDadosService(TratarDadosServiceTemplate):
         Realiza a conversão de coordenadas MD para decimais
 
         Args:
-            cord (pd.DataFrame): Valor da coordenada MD.
+            cord str: Valor da coordenada MD
 
         Returns:
-            grausConvertido float: graus convertidos.
+            grausConvertido float: graus convertidos
         """
         try:
             grausConvertido = float(cord)
@@ -39,30 +39,34 @@ class AvistagemDeteccaoTratarDadosService(TratarDadosServiceTemplate):
                 return grausConvertido
             except: return np.nan
     
-    def tratarPontoDuploCoordenada(self, valor):
+    def tratarPontoDuploCoordenada(self, cord):
         """
-        Método que recebe os valores das cordenadas e trata os valores com mais de um "." 
-        para a conversão para float
+        Recebe os valores das cordenadas e trata os valores com mais de um "." 
+        que dão erro na conversão para float
 
-        :param valor: coordenada de latitute ou longitude
-        :type valor: str
+        Args:
+            cord str: Valor da coordenada
 
-        :return: listaValores[0] | novoValor 
-        :rtype: str | str
-
+        Returns:
+            novaCord float: coordenada tratada
         """
-        listaValores = valor.split(".")
-        if len(listaValores) < 2:
-            return listaValores[0]
-        novoValor = listaValores[0] + "." + listaValores[1]
-        return novoValor
+        listValues = cord.split(".")
+        if len(listValues) < 2:
+            novaCord = float(listValues[0])
+            return novaCord
+        novaCord = listValues[0] + "." + listValues[1]
+        return float(novaCord)
 
     def tratarDadosfaltantes(self, dados: pd.DataFrame) -> str:
         """
-        Método que trata as colunas com dados faltante, tentando inserir dados neutros
+        Trata as colunas com dados faltante, preenchendo as com um valores que
+        alertem sobre a ausência de informação
 
-        :return: Mensagem de sucesso ou erro.
-        :rtype: str
+        Args:
+            dados (pd.DataFrame): dataframe de avistagem e detecção
+
+        Returns:
+            str: Mensagem de sucesso ou erro
         """
         dados["Observações"] = dados["Observações"].fillna("Nenhuma")
         dados["Tipo de som"] = dados["Tipo de som"].fillna("Não registrado")
@@ -75,11 +79,11 @@ class AvistagemDeteccaoTratarDadosService(TratarDadosServiceTemplate):
         """
         Método que trata e formata os dados
 
-        :param dados: dataframe pandas que foi criado no método carregarDados
-        :type dados: pd.DataFrame
+        Args:
+            dados (pd.DataFrame): dataframe com valores vazios tratados.
 
-        :return: Mensagem de sucesso ou erro.
-        :rtype: str
+        Returns:
+            str: Mensagem de sucesso ou erro
         """
         dados["Filhotes"] = dados["Filhotes"].astype(str).replace("x", "0")
         dados["Filhotes"] = pd.to_numeric(dados["Filhotes"], errors='coerce').infer_objects(copy=False)
@@ -118,40 +122,30 @@ class AvistagemDeteccaoTratarDadosService(TratarDadosServiceTemplate):
     
     def limparDados(self, dados: pd.DataFrame) -> str:
         """
-        Método que remove as colunas que não são necessarias
+        Remove as colunas que não são necessarias e as linhas com valores nulos
 
-        :param dados: dataframe pandas que foi criado no método carregarDados
-        :type dados: pd.DataFrame
+        Args:
+            dados (pd.DataFrame): dataframe com data e coordenadas formatadas
 
-        :return: Mensagem de sucesso ou erro.
-        :rtype: str
+        Returns:
+            str: Mensagem de sucesso ou erro
         """
-        dados = dados.dropna(subset=["Expedição"])
-        dados = dados.dropna(subset=["Pernada"])
-        dados = dados.dropna(subset=["Navio"])
-        dados = dados.dropna(subset=["Data (d/m/a)"])
-        dados = dados.dropna(subset=["Registro"])
-        dados = dados.dropna(subset=["Tipo de som"])
-        dados = dados.dropna(subset=["Espécie"])
-        dados = dados.dropna(subset=["Nome comum"])
-        dados = dados.dropna(subset=["Lat (MD) (navio)"])
-        dados = dados.dropna(subset=["Long (MD) (navio)"])
-        dados = dados.dropna(subset=["Tamanho de grupo mínimo"])
-        dados = dados.dropna(subset=["Tamanho de grupo máximo"])
-        dados = dados.dropna(subset=["Filhotes"])
-        dados = dados.dropna(subset=["Observações"])
+        colunas_obrigatorias = [
+            "Expedição", "Pernada", "Navio", "Data (d/m/a)", "Registro",
+            "Tipo de som", "Espécie", "Nome comum", "Lat (MD) (navio)",
+            "Long (MD) (navio)", "Tamanho de grupo mínimo", "Tamanho de grupo máximo",
+            "Filhotes", "Observações"
+        ]
+        dados = dados.dropna(subset=colunas_obrigatorias)
+
         dados = dados[dados["Filhotes"] != "sim"]
 
-        dados.drop(columns=["Número"], inplace=True)
-        dados.drop(columns=["Tamanho de grupo"], inplace=True)
-        dados.drop(columns=["Lat (MD) (navio)"], inplace=True)
-        dados.drop(columns=["Long (MD) (navio)"], inplace=True)
-        dados.drop(columns=["Hora"], inplace=True)
-        dados.drop(columns=["Lat (GMS) (avistagem)"], inplace=True)
-        dados.drop(columns=["Long (GMS) (avistagem)"], inplace=True)
-        dados.drop(columns=["Lat (GMS)"], inplace=True)
-        dados.drop(columns=["Long (GMS)"], inplace=True)
-        dados.drop(columns=["Distancia da costa (km)"], inplace=True)
-        dados.drop(columns=["Unnamed: 22"], inplace=True)
+        colunasDrop = [
+            "Número", "Tamanho de grupo", "Lat (MD) (navio)", "Long (MD) (navio)",
+            "Hora", "Lat (GMS) (avistagem)", "Long (GMS) (avistagem)", "Lat (GMS)",
+            "Long (GMS)", "Distancia da costa (km)", "Unnamed: 22"
+        ]
+
+        dados.drop(columns=colunasDrop, inplace=True)
 
         return self.persistirDados(dados)

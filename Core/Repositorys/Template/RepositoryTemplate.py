@@ -6,10 +6,13 @@ import os
 load_dotenv()
 
 class RepositoryTemplate:
+    """
+    Template do repository para inserir os dados na tabela correspondente
+    """
 
     def __init__(self):
         """
-        Método construtor que pega as variaveis de ambiente com as informações do banco
+        Construtor que pega as variaveis de ambiente com as informações do banco
         """
         self.host = os.getenv("DB_HOST")
         self.port = int(os.getenv("DB_PORT", 3306))
@@ -19,35 +22,35 @@ class RepositoryTemplate:
 
     def inserirDados(self, dados: pd.DataFrame) -> str:
         """
-        Método a ser sobrescrita com os parametros do dataframe para inserir no banco
+        Define o INSERTcomando SQL como vazio para ser sobrescrito
 
-        :param dados: dataframe enviado epla camada de serviço
-        :type dados: pd.DataFrame
+        Args:
+            dados (pd.DataFrame): dataframe que será persistido
 
-        :return: Mensagem de sucesso ou erro.
-        :rtype: str
+        Returns:
+            str: Mensagem de sucesso ou erro
         """
         sql = ""
         return self.persistirDados(dados, sql)
     
     def persistirDados(self, dados, sql) -> str:
         """
-        Método para persistir os dados no banco
+        Persiste os dados no banco
 
-        :param dados: dataframe enviado epla camada de serviço
-        :type dados: pd.DataFrame
-        :param sql: Comando SQL para inserir os dados
-        :type sql: str
+        Args:
+            dados (pd.DataFrame): dataframe que será persistido
+            sql str: Comando SQL para rodar no banco
 
-        :return: Mensagem de sucesso ou erro.
-        :rtype: str
+        Returns:
+            str: Mensagem de sucesso ou erro
 
-        :raises AttributeError: Se o objeto `dados` não for um DataFrame válido.
-        :raises ValueError: Se houver problemas na conversão dos dados para tuplas.
-        :raises pymysql.err.OperationalError: Se houver erro na conexão com o banco de dados.
-        :raises pymysql.err.ProgrammingError: Se o comando SQL estiver incorreto.
-        :raises pymysql.err.IntegrityError: Se houver violação de integridade no banco.
-        :raises pymysql.MySQLError: Para quaisquer outros erros relacionados ao MySQL.
+        Errors:
+            AttributeError: Se o objeto `dados` não for um DataFrame válido.
+            ValueError: Se houver problemas na conversão dos dados para tuplas.
+            pymysql.err.OperationalError: Se houver erro na conexão com o banco de dados.
+            pymysql.err.ProgrammingError: Se o comando SQL estiver incorreto.
+            pymysql.err.IntegrityError: Se houver violação de integridade no banco.
+            pymysql.MySQLError: Para quaisquer outros erros relacionados ao MySQL.
         """
         valores = dados.to_records(index=False).tolist()
         try:
