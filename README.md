@@ -1,7 +1,10 @@
 # Tratamento de dados projeto sentinelas
 <h1 id="usage" > 💻 Descrição </h1>
 
-Projeto feito em python 3 que visa pegar os dados csv do projeto sentinelas, tratar os dados e inseri-los em um banco MySQl.
+Projeto utiliza python 3, ele pega planislhas em csv, trata os dados e insere em um banco  de dados MySQl.
+
+![Layout Projeto Sentinelas](https://github.com/user-attachments/assets/17e412be-f71b-4bf5-89f5-8894759141f3)
+
 
 <h1 id="usage" > 📚 Bibliotecas </h1>
 - Numpy<br>
@@ -9,6 +12,7 @@ Projeto feito em python 3 que visa pegar os dados csv do projeto sentinelas, tra
 - PyMySQL<br>
 - python-dotenv<br>
 - Tkinter<br>
+- pyinstaller (opcional)<br>
 
 <h2>👨‍💻 Como rodar o projeto</h2>
 
@@ -36,10 +40,12 @@ Projeto feito em python 3 que visa pegar os dados csv do projeto sentinelas, tra
 ```
 e poderá utilizar o programa.
 
-5. Alternativamente, se quiser gerar um executavel basta rodar na raiz:
+5. Alternativamente, se quiser gerar um executavel do programa, basta rodar na raiz:
 ```sh
     pip install pyinstaller
-
+```
+para instalar a biblioteca para gerar o executavel e
+```sh
     pyinstaller --onefile --windowed --add-data ".env;." --add-data "assets/frame0;assets/frame0" gui.py
 ```
 que irá gerar o executável dentro de uma pasta ```dist```. Basta arrastar o executavel para a raiz do projeto e pode apagar a pasta ```dist```, a ```build``` e o arquivo ```gui.spec```. Há também a possibilidade de criar um atalho do arquivo e movelo para onde você desejar.

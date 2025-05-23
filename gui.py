@@ -10,6 +10,9 @@ from Core.DadosController import DadosController
 controller = DadosController()
 
 def onClick():
+    """
+    Verifica se os campos estão preenchidos para poder chamar a classe controller
+    """
     path = entry.get()
     opcao = combobox.get()
     if path == "":
@@ -28,9 +31,15 @@ def onClick():
              tkinter.messagebox.showerror(title="Erro", message=response)
 
 def relative_to_assets(path: str) -> Path:
+    """
+    Pega o caminho para os assets
+    """
     return ASSETS_PATH / Path(path)
 
 def selecionar_arquivo():
+    """
+    Abrir seleção do arquivo
+    """
     caminho_arquivo = filedialog.askopenfilename()
     if caminho_arquivo:
         entry.delete(0, tkinter.END)  # Limpa o Entry antes de inserir o novo caminho
@@ -117,5 +126,5 @@ logo = PhotoImage(file=relative_to_assets("logo1.png"))
 canvas.create_image(268, 260, image=logo, anchor="center")
 
 window.resizable(False, False)
-window.title("Tratar dados Sentinelas")
+window.title("Projeto Sentinelas")
 window.mainloop()
