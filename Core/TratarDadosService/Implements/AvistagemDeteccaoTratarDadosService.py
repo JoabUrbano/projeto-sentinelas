@@ -21,6 +21,7 @@ class AvistagemDeteccaoTratarDadosService(TratarDadosServiceTemplate):
         """
         try:
             grausConvertido = float(cord)
+            print("deu certo" + cord)
             return grausConvertido
         
         except (ValueError, TypeError):
@@ -31,6 +32,7 @@ class AvistagemDeteccaoTratarDadosService(TratarDadosServiceTemplate):
                 indice = cord[0]
                 graus = cord[1:].split(":")
                 if len(graus) != 2:
+                    print("matou" + cord)
                     return np.nan
 
                 grausConvertido = float(graus[0]) + float(graus[1])/60
@@ -48,14 +50,14 @@ class AvistagemDeteccaoTratarDadosService(TratarDadosServiceTemplate):
             cord str: Valor da coordenada
 
         Returns:
-            novaCord float: coordenada tratada
+            novaCord str: coordenada tratada
         """
         listValues = cord.split(".")
         if len(listValues) < 2:
-            novaCord = float(listValues[0])
+            novaCord = listValues[0]
             return novaCord
         novaCord = listValues[0] + "." + listValues[1]
-        return float(novaCord)
+        return novaCord
 
     def tratarDadosfaltantes(self, dados: pd.DataFrame) -> str:
         """
@@ -93,6 +95,7 @@ class AvistagemDeteccaoTratarDadosService(TratarDadosServiceTemplate):
         dados["Data (d/m/a)"] = dados["Data (d/m/a)"].dt.strftime("%Y-%m-%d %H:%M:%S")
        
         # d+ para pegar obrigatoriamente e os s* a* para capturar espaços e string
+        dados["Tamanho de grupo"] = dados["Tamanho de grupo"].astype(str).str.replace("x", "0")
         dados["Tamanho de grupo"] = dados["Tamanho de grupo"].astype(str).str.lower()
         dados[["Tamanho de grupo mínimo", "Tamanho de grupo máximo"]] = dados["Tamanho de grupo"].str.extract(r'^\s*(\d+)\s*(?:a\s*(\d+))?\s*$')
         
@@ -103,6 +106,15 @@ class AvistagemDeteccaoTratarDadosService(TratarDadosServiceTemplate):
         dados["Tamanho de grupo máximo"] = pd.to_numeric(dados["Tamanho de grupo máximo"], errors='coerce')
 
         # *** Tratar Latitude e Longitude
+        dados["Lat (MD) (navio)"] = dados["Lat (MD) (navio)"].astype(str).str.replace(",", ".")
+        dados["Long (MD) (navio)"] = dados["Long (MD) (navio)"].astype(str).str.replace(",", ".")
+        
+        dados["Lat (MD) (navio)"] = dados["Lat (MD) (navio)"].astype(str).str.replace("°", ":")
+        dados["Long (MD) (navio)"] = dados["Long (MD) (navio)"].astype(str).str.replace("°", ":")
+
+        dados["Lat (MD) (navio)"] = dados["Lat (MD) (navio)"].apply(self.tratarPontoDuploCoordenada)
+        dados["Long (MD) (navio)"] = dados["Long (MD) (navio)"].apply(self.tratarPontoDuploCoordenada)
+
         dados["Lat (MD) (navio)"] = dados["Lat (MD) (navio)"].apply(self.converterCoordenada)
         dados["Long (MD) (navio)"] = dados["Long (MD) (navio)"].apply(self.converterCoordenada)
 
@@ -115,8 +127,8 @@ class AvistagemDeteccaoTratarDadosService(TratarDadosServiceTemplate):
         dados['Lat (GD) (avistagem)'] = dados['Lat (GD) (avistagem)'].apply(self.tratarPontoDuploCoordenada)
         dados['Long (GD) (avistagem)'] = dados['Long (GD) (avistagem)'].apply(self.tratarPontoDuploCoordenada)
 
-        dados["Lat (GD) (avistagem)"] = dados["Lat (GD) (avistagem)"].astype(float).round(3)
-        dados["Long (GD) (avistagem)"] = dados["Long (GD) (avistagem)"].astype(float).round(3)
+        dados["Lat (GD) (avistagem)"] = dados["Lat (GD) (avistagem)"].astype(float).round(4)
+        dados["Long (GD) (avistagem)"] = dados["Long (GD) (avistagem)"].astype(float).round(4)
         
         return self.limparDados(dados)
     
