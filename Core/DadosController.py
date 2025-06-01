@@ -1,20 +1,21 @@
-from Core.main import Main
+from Core.TratarDadosService.Implements.AvistagemDeteccaoTratarDadosService import AvistagemDeteccaoTratarDadosService
+from Core.Repositorys.Implements.AvistagemDeteccaoRepository import AvistagemDeteccaoRepository
 
 class DadosController:
     """
-    Constrolador que organiza as chamadas de acordo com o tipo da planilha
+    Constrolador que organiza as chamadas de acordo com a opção selecionada
     """
-    def __init__(self):
-        """
-        Construtor que instância o main
-        """
-        self.main = Main()
-    
     def tratarRequisicao(self, path, opcao) -> str:
         """
-        Chama o método correspondente no mais para o tipo da planilha
+        Instância de service correspondente a opção selecionada e passa o repository
+        correspondente ao service como parâmetro
         """
         if opcao == "Avistagem e detecção":
-            return self.main.carregarAvistagemDeteccao(path)
+            avistagemDeteccaoRepository = AvistagemDeteccaoRepository()
+            avistagemDeteccaoColetarDados = AvistagemDeteccaoTratarDadosService(
+                path, avistagemDeteccaoRepository
+            )
+
+            return avistagemDeteccaoColetarDados.carregarDados()
         else:
             return "Opção inválida!"

@@ -21,7 +21,6 @@ class AvistagemDeteccaoTratarDadosService(TratarDadosServiceTemplate):
         """
         try:
             grausConvertido = float(cord)
-            print("deu certo" + cord)
             return grausConvertido
         
         except (ValueError, TypeError):
@@ -32,7 +31,6 @@ class AvistagemDeteccaoTratarDadosService(TratarDadosServiceTemplate):
                 indice = cord[0]
                 graus = cord[1:].split(":")
                 if len(graus) != 2:
-                    print("matou" + cord)
                     return np.nan
 
                 grausConvertido = float(graus[0]) + float(graus[1])/60
