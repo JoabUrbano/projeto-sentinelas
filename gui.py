@@ -25,7 +25,7 @@ def onClick():
         )
     else:
         response = controller.tratarRequisicao(path, opcao)
-        if response == "Dados inseridos com sucesso!":
+        if response == "Todos os dados foram inseridos com sucesso!":
             tkinter.messagebox.showinfo(title="Sucesso", message=response)
         else:
              tkinter.messagebox.showerror(title="Erro", message=response)

@@ -22,7 +22,7 @@ class RepositoryTemplate:
 
     def inserirDados(self, dados: pd.DataFrame) -> str:
         """
-        Define o INSERTcomando SQL como vazio para ser sobrescrito
+        Define o comando SQL INSERT como vazio para ser sobrescrito
 
         Args:
             dados (pd.DataFrame): dataframe que será persistido
@@ -35,7 +35,8 @@ class RepositoryTemplate:
     
     def persistirDados(self, dados, sql) -> str:
         """
-        Persiste os dados no banco
+        Persiste os dados no banco, inserindo em lotes de 300 em 300 para evitar erros
+        de mémoria ou disco com grandes inserções
 
         Args:
             dados (pd.DataFrame): dataframe que será persistido
@@ -52,7 +53,7 @@ class RepositoryTemplate:
             pymysql.err.IntegrityError: Se houver violação de integridade no banco.
             pymysql.MySQLError: Para quaisquer outros erros relacionados ao MySQL.
         """
-        valores = dados.to_records(index=False).tolist()
+        batch_size: int = 300
         try:
             with pymysql.connect(
                 host=self.host,
@@ -62,10 +63,31 @@ class RepositoryTemplate:
                 database=self.database
             ) as connection:
                 with connection.cursor() as cursor:
-                    cursor.executemany(sql, valores)
-
-                connection.commit()
-                return "Dados inseridos com sucesso!"
+                    total_rows = len(dados)
+                    for start in range(0, total_rows, batch_size):
+                        end = min(start + batch_size, total_rows)
+                        batch = dados.iloc[start:end].to_records(index=False).tolist()
+                        cursor.executemany(sql, batch)
+                        connection.commit()
+            return "Todos os dados foram inseridos com sucesso!"
         
+        except AttributeError:
+            return "O dataframe fornecido não é válido!"
+
+        except ValueError:
+            return "Houve um erro na conversão dos dados para tuplas!"
+        
+        except pymysql.err.OperationalError:
+            return "Erro ao tentar conectar com o banco de dados!"
+        
+        except pymysql.err.ProgrammingError:
+            return "Comando SQL inválido!"
+        
+        except pymysql.err.IntegrityError:
+            return "Violação da integridade do banco de dados!"
+        
+        except pymysql.MySQLError as e:
+            return f"Erro no MySQL: {e}!"
+    
         except Exception as e:
            return f"Erro ao inserir no banco: {e}"
