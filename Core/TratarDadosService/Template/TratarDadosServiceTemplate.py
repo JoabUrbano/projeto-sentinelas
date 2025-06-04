@@ -28,7 +28,6 @@ class TratarDadosServiceTemplate():
             FileNotFoundError: Se o arquivo não for encontrado no caminho recebido
             UnicodeDecodeError: Se a codificação do arquivo for incompatível com 'utf-8'
             pandas.errors.ParserError: Se o conteúdo do CSV estiver mal formado
-            OSError: Em caso de problemas ao acessar o arquivo
         """
         try:
             dados = pd.read_csv(
@@ -36,6 +35,15 @@ class TratarDadosServiceTemplate():
             )
             return self.tratarDadosfaltantes(dados)
         
+        except FileNotFoundError:
+            return "Arquivo não for encontrado no caminho fornecido!"
+        
+        except UnicodeDecodeError:
+            return "Arquivo for incompatível com 'utf-8'!"
+        
+        except pd.errors.ParserError:
+            return "Arquivo CSV mal formatado"
+
         except Exception as e:
            return f"Erro ao abrir o arquivo: {e}."
 
