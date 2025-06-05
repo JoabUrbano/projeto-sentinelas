@@ -16,9 +16,14 @@ Projeto utiliza python 3, ele pega planislhas em csv, trata os dados e insere em
 
 <h2>👨‍💻 Como rodar o projeto</h2>
 
-1. É necessario ter o <a href="https://www.python.org/">python 3</a> instalado e o pip.
+1. É necessario ter o <a href="https://www.python.org/">python 3</a> instalado, o pip e o <a href="https://www.docker.com/">docker</a>.
 
-2. Com o pip instalado é necessario instalar as bibliotecas.
+2. Para subir os containers docker do banco de dados e do Grafana(Que é onde estão os dashboards) basta garantir que o docker esteja rodando e utilizar
+```sh
+    docker compose up -d
+```
+
+3. Com o pip instalado é necessario instalar as bibliotecas.
 ```sh
     pip install numpy
 ```
@@ -32,15 +37,15 @@ Projeto utiliza python 3, ele pega planislhas em csv, trata os dados e insere em
     pip install python-dotenv
 ```
 
-3. Crie um arquivo ```.env``` na raiz do projeto e defina as variaveis de ambiente no arquivo como está no ```.env.example```.
+4. Crie um arquivo ```.env``` na raiz do projeto e defina as variaveis de ambiente no arquivo como está no ```.env.example```.
 
-4. O arquivo ```gui.py```  é a interfacie gráfica do projeto, baasta executana na pasta raiz do projeco com:
+5. O arquivo ```gui.py```  é a interfacie gráfica do projeto, baasta executana na pasta raiz do projeco com:
 ```sh
     python gui.py
 ```
 e poderá utilizar o programa.
 
-5. Alternativamente, se quiser gerar um executavel do programa, basta rodar na raiz:
+6. Alternativamente, se quiser gerar um executavel do programa, basta rodar na raiz:
 ```sh
     pip install pyinstaller
 ```
