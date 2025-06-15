@@ -71,7 +71,6 @@ class AvistagemDeteccaoTratarDadosService(TratarDadosServiceTemplate):
         dados["Observações"] = dados["Observações"].fillna("Nenhuma")
         dados["Tipo de som"] = dados["Tipo de som"].fillna("Não registrado")
         dados["Nome comum"] = dados["Nome comum"].fillna("Não identificado")
-        dados["Filhotes"] = dados["Filhotes"].fillna("0")
 
         return self.formatarDados(dados)
 
@@ -88,9 +87,19 @@ class AvistagemDeteccaoTratarDadosService(TratarDadosServiceTemplate):
         dados["Filhotes"] = pd.to_numeric(dados["Filhotes"], errors='coerce').infer_objects(copy=False)
          
         # Converte a coluna para datetime, tratando erros
-        dados["Data (d/m/a)"] = pd.to_datetime(dados["Data (d/m/a)"], format="%d/%m/%Y", errors="coerce")
+        dados["Hora"] = dados["Hora"].fillna("00:00:00")
+
+        # Garante que a hora tenha formato válido (ex: 14:30 -> 14:30:00)
+        dados["Hora"] = dados["Hora"].astype(str).str.strip()
+        dados["Hora"] = dados["Hora"].apply(lambda x: x if len(x.split(":")) == 3 else x + ":00" if len(x.split(":")) == 2 else "00:00:00")
+
+        # Concatena data e hora
+        dados["Data (d/m/a)"] = dados["Data (d/m/a)"].astype(str).str.strip() + " " + dados["Hora"]
+
+        # Converte tudo para datetime
+        dados["Data (d/m/a)"] = pd.to_datetime(dados["Data (d/m/a)"], format="%d/%m/%Y %H:%M:%S", errors="coerce")
         dados["Data (d/m/a)"] = dados["Data (d/m/a)"].dt.strftime("%Y-%m-%d %H:%M:%S")
-       
+
         # d+ para pegar obrigatoriamente e os s* a* para capturar espaços e string
         dados["Tamanho de grupo"] = dados["Tamanho de grupo"].astype(str).str.lower()
         dados[["Tamanho de grupo mínimo", "Tamanho de grupo máximo"]] = dados["Tamanho de grupo"].str.extract(r'^\s*(\d+)\s*(?:a\s*(\d+))?\s*$')
