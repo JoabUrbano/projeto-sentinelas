@@ -85,7 +85,6 @@ class AvistagemDeteccaoTratarDadosService(TratarDadosServiceTemplate):
         Returns:
             str: Mensagem de sucesso ou erro
         """
-        dados["Filhotes"] = dados["Filhotes"].astype(str).replace("x", "0")
         dados["Filhotes"] = pd.to_numeric(dados["Filhotes"], errors='coerce').infer_objects(copy=False)
          
         # Converte a coluna para datetime, tratando erros
@@ -93,7 +92,6 @@ class AvistagemDeteccaoTratarDadosService(TratarDadosServiceTemplate):
         dados["Data (d/m/a)"] = dados["Data (d/m/a)"].dt.strftime("%Y-%m-%d %H:%M:%S")
        
         # d+ para pegar obrigatoriamente e os s* a* para capturar espaços e string
-        dados["Tamanho de grupo"] = dados["Tamanho de grupo"].astype(str).str.replace("x", "0")
         dados["Tamanho de grupo"] = dados["Tamanho de grupo"].astype(str).str.lower()
         dados[["Tamanho de grupo mínimo", "Tamanho de grupo máximo"]] = dados["Tamanho de grupo"].str.extract(r'^\s*(\d+)\s*(?:a\s*(\d+))?\s*$')
         
