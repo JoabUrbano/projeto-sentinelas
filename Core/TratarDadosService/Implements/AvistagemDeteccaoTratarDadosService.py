@@ -9,6 +9,21 @@ class AvistagemDeteccaoTratarDadosService(TratarDadosServiceTemplate):
     tabela do tipo avistagem e detecção
     """
 
+    def returnMonth(self, date):
+        """
+        Separa o mês da data para uma coluna separada
+
+        Args:
+            date str: data em formato dia/mês/ano
+
+        Returns:
+            month int: o mês em valor númerico ou np.nan para campos sem data
+        """
+        if type(date) == float:
+            return np.nan 
+        month = date.split("/")
+        return int(month[1])
+
     def converterCoordenada(self, cord):
         """
         Realiza a conversão de coordenadas MD para decimais
@@ -87,6 +102,8 @@ class AvistagemDeteccaoTratarDadosService(TratarDadosServiceTemplate):
         dados["Filhotes"] = pd.to_numeric(dados["Filhotes"], errors='coerce').infer_objects(copy=False)
          
         # Converte a coluna para datetime, tratando erros
+        dados["mes_avistagem"] = dados["Data (d/m/a)"].apply(self.returnMonth)
+
         dados["Hora"] = dados["Hora"].fillna("00:00:00")
 
         # Garante que a hora tenha formato válido (ex: 14:30 -> 14:30:00)
@@ -97,9 +114,9 @@ class AvistagemDeteccaoTratarDadosService(TratarDadosServiceTemplate):
         dados["Data (d/m/a)"] = dados["Data (d/m/a)"].astype(str).str.strip() + " " + dados["Hora"]
 
         # Converte tudo para datetime
-        dados["Data (d/m/a)"] = pd.to_datetime(dados["Data (d/m/a)"], format="%d/%m/%Y %H:%M:%S", errors="coerce")
+        dados["Data (d/m/a)"] = pd.to_datetime(dados["Data (d/m/a)"], format="%d/%m/%Y %H:%M:%S", errors="coerce")     
         dados["Data (d/m/a)"] = dados["Data (d/m/a)"].dt.strftime("%Y-%m-%d %H:%M:%S")
-
+ 
         # d+ para pegar obrigatoriamente e os s* a* para capturar espaços e string
         dados["Tamanho de grupo"] = dados["Tamanho de grupo"].astype(str).str.lower()
         dados[["Tamanho de grupo mínimo", "Tamanho de grupo máximo"]] = dados["Tamanho de grupo"].str.extract(r'^\s*(\d+)\s*(?:a\s*(\d+))?\s*$')
@@ -151,7 +168,7 @@ class AvistagemDeteccaoTratarDadosService(TratarDadosServiceTemplate):
             "Expedição", "Pernada", "Navio", "Data (d/m/a)", "Registro",
             "Tipo de som", "Espécie", "Nome comum", "Lat (MD) (navio)",
             "Long (MD) (navio)", "Tamanho de grupo mínimo", "Tamanho de grupo máximo",
-            "Filhotes", "Observações"
+            "Filhotes", "Observações", "mes_avistagem"
         ]
         dados = dados.dropna(subset=colunas_obrigatorias)
 
