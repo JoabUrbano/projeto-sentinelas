@@ -103,10 +103,9 @@ class AvistagemDeteccaoTratarDadosService(TratarDadosServiceTemplate):
          
         # Converte a coluna para datetime, tratando erros
         dados["mes_avistagem"] = dados["Data (d/m/a)"].apply(self.returnMonth)
-
         dados["Hora"] = dados["Hora"].fillna("00:00:00")
 
-        # Garante que a hora tenha formato válido (ex: 14:30 -> 14:30:00)
+        # Formato de hora ( 14:30 -> 14:30:00 )
         dados["Hora"] = dados["Hora"].astype(str).str.strip()
         dados["Hora"] = dados["Hora"].apply(lambda x: x if len(x.split(":")) == 3 else x + ":00" if len(x.split(":")) == 2 else "00:00:00")
 
@@ -127,7 +126,7 @@ class AvistagemDeteccaoTratarDadosService(TratarDadosServiceTemplate):
         dados["Tamanho de grupo mínimo"] = pd.to_numeric(dados["Tamanho de grupo mínimo"], errors='coerce')
         dados["Tamanho de grupo máximo"] = pd.to_numeric(dados["Tamanho de grupo máximo"], errors='coerce')
 
-        # *** Tratar Latitude e Longitude
+        # ----- Tratar Latitude e Longitude -----
         dados["Lat (MD) (navio)"] = dados["Lat (MD) (navio)"].astype(str).str.replace(",", ".")
         dados["Long (MD) (navio)"] = dados["Long (MD) (navio)"].astype(str).str.replace(",", ".")
         
