@@ -19,6 +19,6 @@ CREATE TABLE IF NOT EXISTS `tb_avistagem_deteccao` (
 	`observacoes` varchar(255) NOT NULL,
 	`tamanho_grupo_minimo` int NOT NULL,
 	`tamanho_grupo_maximo` int NOT NULL,
-	`mes_avistagem` int NOT NULL,
+	`mes_avistagem` varchar(255) NOT NULL,
 	PRIMARY KEY (`id`)
 );

@@ -3,6 +3,12 @@ import pandas as pd
 
 from Core.TratarDadosService.Template.TratarDadosServiceTemplate import TratarDadosServiceTemplate
 
+months = {
+            1: "Janeiro", 2: "Fevereiro", 3: "Março", 4: "Abril",
+            5: "Maio", 6: "Junho", 7: "Julho", 8: "Agosto",
+            9: "Setembro", 10: "Outubro", 11: "Novembro", 12: "Dezembro"
+        }
+
 class AvistagemDeteccaoTratarDadosService(TratarDadosServiceTemplate):
     """
     Implementação do template de tratamento de dados para especializar a classe para a
@@ -22,7 +28,8 @@ class AvistagemDeteccaoTratarDadosService(TratarDadosServiceTemplate):
         if type(date) == float:
             return np.nan 
         month = date.split("/")
-        return int(month[1])
+        numericMonth = month[1]
+        return months.get(int(numericMonth), "Mês não identificado!")
 
     def converterCoordenada(self, cord):
         """
