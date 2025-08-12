@@ -1,5 +1,5 @@
 from Core.TratarDadosService.Implements.AvistagemDeteccaoTratarDadosService import AvistagemDeteccaoTratarDadosService
-from Core.Repositorys.Implements.AvistagemDeteccaoRepository import AvistagemDeteccaoRepository
+from Core.Repositorys.Implements.AvistagemDeteccaoRepositoryImp import AvistagemDeteccaoRepositoryImp
 
 class DadosController:
     """
@@ -11,7 +11,7 @@ class DadosController:
         correspondente ao service como parâmetro
         """
         if opcao == "Avistagem e detecção":
-            avistagemDeteccaoRepository = AvistagemDeteccaoRepository()
+            avistagemDeteccaoRepository = AvistagemDeteccaoRepositoryImp()
             avistagemDeteccaoColetarDados = AvistagemDeteccaoTratarDadosService(
                 path, avistagemDeteccaoRepository
             )
