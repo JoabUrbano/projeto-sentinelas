@@ -1,0 +1,598 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Dashbord do número de avistamentos",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 6,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "eeefgw117uo00d"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 19,
+        "w": 13,
+        "x": 0,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "basemap": {
+          "config": {
+            "server": "streets",
+            "showLabels": true,
+            "theme": "auto"
+          },
+          "name": "Layer 0",
+          "type": "osm-standard"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": false,
+          "showZoom": true
+        },
+        "layers": [
+          {
+            "config": {
+              "showLegend": false,
+              "style": {
+                "color": {
+                  "fixed": "dark-green"
+                },
+                "opacity": 0.4,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 5,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/circle.svg",
+                  "mode": "fixed"
+                },
+                "symbolAlign": {
+                  "horizontal": "center",
+                  "vertical": "center"
+                },
+                "text": {
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "textConfig": {
+                  "fontSize": 14,
+                  "offsetX": 12,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "location": {
+              "mode": "auto"
+            },
+            "name": "Avistamentos",
+            "tooltip": true,
+            "type": "markers"
+          }
+        ],
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "allLayers": true,
+          "id": "zero",
+          "lat": 0,
+          "lon": 0,
+          "zoom": 1
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "dataset": "sentinelas",
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT latitude as \"Latitude\",\r\n  longitude as \"Longitude\",\r\n  expedicao as \"Expedição\",\r\n  navio as \"Navio da expedição\", \r\n  data AS \"Time\"\r\nFROM sentinelas.tb_avistagem_deteccao \r\nWHERE ('${especie:raw}' = 'All' OR especie LIKE '${especie:raw}') AND\r\n      ('${mes:raw}' = 'All' OR mes_avistagem LIKE '${mes:raw}') AND\r\n      ('${expedicao:raw}' = 'All' OR expedicao LIKE '${expedicao:raw}') AND\r\n      ('${registro:raw}' = 'All' OR registro LIKE '${registro:raw}')",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [
+                  {
+                    "name": "latitude",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              },
+              {
+                "parameters": [
+                  {
+                    "name": "longitude",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "tb_avistagem_deteccao"
+        }
+      ],
+      "title": "Ponstos de avistagens",
+      "type": "geomap"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "eeefgw117uo00d"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 11,
+        "x": 13,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "dataset": "sentinelas",
+          "datasource": {
+            "type": "mysql",
+            "uid": "eeefgw117uo00d"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT data, tamanho_grupo_minimo AS \"Tamanho mínimo do grupo\", tamanho_grupo_maximo AS \"Tamanho máximo do grupo\"\r\nFROM sentinelas.tb_avistagem_deteccao \r\nWHERE ('${especie:raw}' = 'All' OR especie LIKE '${especie:raw}') AND\r\n      ('${mes:raw}' = 'All' OR mes_avistagem LIKE '${mes:raw}') AND\r\n      ('${expedicao:raw}' = 'All' OR expedicao LIKE '${expedicao:raw}') AND\r\n      ('${registro:raw}' = 'All' OR registro LIKE '${registro:raw}')\r\nLIMIT 6",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [
+                  {
+                    "name": "data",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              },
+              {
+                "parameters": [
+                  {
+                    "name": "tamanho_grupo_minimo",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              },
+              {
+                "parameters": [
+                  {
+                    "name": "tamanho_grupo_maximo",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50,
+            "whereJsonTree": {
+              "children1": [],
+              "id": "88a9abab-0123-4456-b89a-b1955c42d516",
+              "type": "group"
+            }
+          },
+          "table": "tb_avistagem_deteccao"
+        },
+        {
+          "dataset": "mysql",
+          "datasource": {
+            "type": "mysql",
+            "uid": "eeefgw117uo00d"
+          },
+          "editorMode": "builder",
+          "format": "table",
+          "hide": false,
+          "rawSql": "",
+          "refId": "B"
+        }
+      ],
+      "title": "Avistamento grupos",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "eeefgw117uo00d"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 11,
+        "x": 13,
+        "y": 11
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "dataset": "sentinelas",
+          "datasource": {
+            "type": "mysql",
+            "uid": "eeefgw117uo00d"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  $__timeGroupAlias(data, 1d),\r\n  COUNT(*) AS Avistagens\r\nFROM\r\n  tb_avistagem_deteccao\r\nWHERE\r\n  $__timeFilter(data) AND\r\n  ('${especie:raw}' = 'All' OR especie LIKE '${especie:raw}') AND\r\n  ('${mes:raw}' = 'All' OR mes_avistagem LIKE '${mes:raw}') AND\r\n  ('${expedicao:raw}' = 'All' OR expedicao LIKE '${expedicao:raw}') AND\r\n  ('${registro:raw}' = 'All' OR registro LIKE '${registro:raw}')\r\nGROUP BY\r\n  1\r\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [
+                  {
+                    "name": "data",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              },
+              {
+                "parameters": [
+                  {
+                    "name": "tamanho_grupo_minimo",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              },
+              {
+                "parameters": [
+                  {
+                    "name": "tamanho_grupo_maximo",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50,
+            "whereJsonTree": {
+              "children1": [
+                {
+                  "id": "9abb88a9-89ab-4cde-b012-3195611804b5",
+                  "properties": {
+                    "field": "nome_comum",
+                    "fieldSrc": "field",
+                    "operator": "equal",
+                    "value": [
+                      null
+                    ],
+                    "valueSrc": [
+                      "value"
+                    ],
+                    "valueType": [
+                      "text"
+                    ]
+                  },
+                  "type": "rule"
+                }
+              ],
+              "id": "88a9abab-0123-4456-b89a-b1955c42d516",
+              "type": "group"
+            }
+          },
+          "table": "tb_avistagem_deteccao"
+        }
+      ],
+      "title": "Ocorrências dos avistamentos",
+      "type": "timeseries"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 40,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": "%",
+        "allowCustomValue": false,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "definition": "SELECT DISTINCT especie FROM tb_avistagem_deteccao",
+        "description": "Nome da especie da avistagem.",
+        "includeAll": true,
+        "label": "Especies",
+        "name": "especie",
+        "options": [],
+        "query": "SELECT DISTINCT especie FROM tb_avistagem_deteccao",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allValue": "%",
+        "allowCustomValue": false,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "definition": "SELECT DISTINCT mes_avistagem FROM tb_avistagem_deteccao",
+        "description": "Mês em que foi registrado a avistagem.",
+        "includeAll": true,
+        "label": "Mês",
+        "name": "mes",
+        "options": [],
+        "query": "SELECT DISTINCT mes_avistagem FROM tb_avistagem_deteccao",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allValue": "%",
+        "allowCustomValue": false,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "definition": "SELECT DISTINCT expedicao FROM tb_avistagem_deteccao",
+        "description": "Variavel para filtrar avistagens por expedição.",
+        "includeAll": true,
+        "label": "Expedição",
+        "name": "expedicao",
+        "options": [],
+        "query": "SELECT DISTINCT expedicao FROM tb_avistagem_deteccao",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allValue": "%",
+        "allowCustomValue": false,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "definition": "SELECT DISTINCT registro FROM tb_avistagem_deteccao",
+        "description": "Forma de registro a qual foi utilizada para realizar a avistagem.",
+        "includeAll": true,
+        "label": "Registro da avistagem",
+        "name": "registro",
+        "options": [],
+        "query": "SELECT DISTINCT registro FROM tb_avistagem_deteccao",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "2017-12-03T02:00:00.000Z",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Avistagem e detecção",
+  "uid": "beefkk6wcak1sc",
+  "version": 60,
+  "weekStart": ""
+}
